@@ -38,7 +38,7 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
         QrscanPlugin plugin = new QrscanPlugin(registrar.activity());
         channel.setMethodCallHandler(plugin);
         registrar.addActivityResultListener(plugin);
-//        EventBus.getDefault().register(registrar.activity());
+        EventBus.getDefault().register(plugin);
 
         ZXingLibrary.initDisplayOpinion(registrar.activity());
     }
@@ -102,11 +102,11 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
         this.result.success(datas);
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void goChoosePhoto(String event) {
-//        CodeUtils.AnalyzeCallback analyzeCallback = new CustomAnalyzeCallback(this.result, null);
-//        analyzeCallback.onAnalyzeSuccess(null,event);
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void goChoosePhoto(String event) {
+        CodeUtils.AnalyzeCallback analyzeCallback = new CustomAnalyzeCallback(this.result, null);
+        analyzeCallback.onAnalyzeSuccess(null,event);
+    }
 
     @Override
     public boolean onActivityResult(int code, int resultCode, Intent intent) {
