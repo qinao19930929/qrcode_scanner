@@ -45,7 +45,7 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
 
     public QrscanPlugin(Activity activity) {
         this.activity = activity;
-        CheckPermissionUtils.initPermission(this.activity);
+//        CheckPermissionUtils.initPermission(this.activity);
     }
 
     @Override
