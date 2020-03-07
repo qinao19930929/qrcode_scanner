@@ -105,7 +105,8 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
                 if (secondBundle != null) {
                     try {
                         CodeUtils.AnalyzeCallback analyzeCallback = new CustomAnalyzeCallback(this.result, intent);
-                        CodeUtils.analyzeBitmap(secondBundle.getString("path"), analyzeCallback);
+//                        CodeUtils.analyzeBitmap(secondBundle.getString("path"), analyzeCallback);
+                        analyzeCallback.onAnalyzeSuccess(null,secondBundle.getString("m_intent"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

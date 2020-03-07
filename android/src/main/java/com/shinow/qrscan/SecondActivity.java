@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.hardware.Sensor;
@@ -27,8 +28,8 @@ public class SecondActivity extends AppCompatActivity {
     public static boolean isLightOpen = false;
     private int REQUEST_IMAGE = 101;
     private LinearLayout lightLayout;
-    private LinearLayout backLayout;
-    private LinearLayout photoLayout;
+    private ImageView ivBack;
+    private ImageView ivChoosePhoto;
     private SensorManager sensorManager;
     private Sensor lightSensor;
     private SensorEventListener sensorEventListener;
@@ -43,8 +44,8 @@ public class SecondActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
 
         lightLayout = findViewById(R.id.scan_light);
-        backLayout = findViewById(R.id.scan_back);
-        photoLayout = findViewById(R.id.choose_photo);
+        ivBack = findViewById(R.id.iv_back);
+        ivChoosePhoto = findViewById(R.id.iv_choose_photo);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -82,19 +83,27 @@ public class SecondActivity extends AppCompatActivity {
                 }
             }
         });
-        backLayout.setOnClickListener(new View.OnClickListener() {
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SecondActivity.this.finish();
             }
         });
-        photoLayout.setOnClickListener(new View.OnClickListener() {
+        ivChoosePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent intent = new Intent();
+//                intent.setAction(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                SecondActivity.this.startActivityForResult(intent, REQUEST_IMAGE);
+                //这里修改 调到flutter去选择照片
                 Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                SecondActivity.this.startActivityForResult(intent, REQUEST_IMAGE);
+                intent.setClass(SecondActivity.this, QrscanPlugin.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("m_intent", "choose_photo");
+                intent.putExtra("secondBundle", bundle);
+                setResult(Activity.RESULT_OK, intent);
+                SecondActivity.this.finish();
             }
         });
     }

@@ -18,6 +18,10 @@ rootProject.allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        flatDir {
+            //所有的module的repositories下把library module中的libs目录添加到依赖关系中
+            dirs project(':qrscan').file('libs')
+        }
     }
 }
 
@@ -33,6 +37,11 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
@@ -40,5 +49,5 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'pub.devrel:easypermissions:0.2.0'
-    implementation 'com.github.leyan95:android-zxingLibrary:0.1.2-PRE'
+    implementation(name: 'lib-zxing-release', ext: 'aar')
 }
