@@ -17,6 +17,10 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.ByteArrayOutputStream;
 
 import static com.uuzuche.lib_zxing.activity.CodeUtils.RESULT_SUCCESS;
@@ -40,6 +44,7 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
 
     public QrscanPlugin(Activity activity) {
         this.activity = activity;
+        EventBus.getDefault().register(this);
         CheckPermissionUtils.initPermission(this.activity);
     }
 
@@ -95,6 +100,12 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] datas = baos.toByteArray();
         this.result.success(datas);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void goChoosePhoto(String event) {
+        CodeUtils.AnalyzeCallback analyzeCallback = new CustomAnalyzeCallback(this.result, null);
+        analyzeCallback.onAnalyzeSuccess(null,event);
     }
 
     @Override

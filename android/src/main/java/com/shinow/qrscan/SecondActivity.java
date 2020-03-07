@@ -22,6 +22,8 @@ import android.hardware.SensorManager;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class SecondActivity extends AppCompatActivity {
     private static final String TAG = SecondActivity.class.getSimpleName();
 
@@ -96,13 +98,15 @@ public class SecondActivity extends AppCompatActivity {
 //                intent.setAction(Intent.ACTION_PICK);
 //                intent.setType("image/*");
 //                SecondActivity.this.startActivityForResult(intent, REQUEST_IMAGE);
+
                 //这里修改 调到flutter去选择照片
-                Intent intent = new Intent();
-                intent.setClass(SecondActivity.this, QrscanPlugin.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("m_intent", "choose_photo");
-                intent.putExtra("secondBundle", bundle);
-                setResult(Activity.RESULT_OK, intent);
+//                Intent intent = new Intent();
+//                intent.setClass(SecondActivity.this, QrscanPlugin.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("m_intent", "choose_photo");
+//                intent.putExtra("secondBundle", bundle);
+//                setResult(Activity.RESULT_OK, intent);
+                EventBus.getDefault().post("choose_photo");
                 SecondActivity.this.finish();
             }
         });

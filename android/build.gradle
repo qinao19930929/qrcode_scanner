@@ -50,4 +50,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'pub.devrel:easypermissions:0.2.0'
     implementation(name: 'lib-zxing-release', ext: 'aar')
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }
