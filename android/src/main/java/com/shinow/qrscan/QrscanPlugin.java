@@ -38,13 +38,13 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
         QrscanPlugin plugin = new QrscanPlugin(registrar.activity());
         channel.setMethodCallHandler(plugin);
         registrar.addActivityResultListener(plugin);
+        EventBus.getDefault().register(plugin);
 
         ZXingLibrary.initDisplayOpinion(registrar.activity());
     }
 
     public QrscanPlugin(Activity activity) {
         this.activity = activity;
-        EventBus.getDefault().register(this);
         CheckPermissionUtils.initPermission(this.activity);
     }
 
