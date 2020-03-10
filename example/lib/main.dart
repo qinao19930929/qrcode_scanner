@@ -264,7 +264,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future _scanPhoto() async {
-    String barcode = await scanner.scanPhoto();
+    String barcode;
+    try {
+      barcode = await scanner.scanPhoto();
+    }catch(e){
+    }
     this._outputController.text = barcode;
   }
 
