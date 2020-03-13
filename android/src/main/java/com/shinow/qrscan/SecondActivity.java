@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.widget.TextView;
 
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
@@ -35,6 +36,7 @@ public class SecondActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor lightSensor;
     private SensorEventListener sensorEventListener;
+    TextView tvTitle, tvContent, tvWarn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,12 @@ public class SecondActivity extends AppCompatActivity {
         captureFragment.setAnalyzeCallback(analyzeCallback);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
 
+        tvContent = findViewById(R.id.tv_scanner_content);
         lightLayout = findViewById(R.id.scan_light);
         ivBack = findViewById(R.id.iv_back);
         ivChoosePhoto = findViewById(R.id.iv_choose_photo);
+        tvTitle = findViewById(R.id.tv_scanner_title);
+        tvWarn = findViewById(R.id.tv_warn);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -73,6 +78,18 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        String title = getIntent().getStringExtra("title");
+        String content = getIntent().getStringExtra("content");
+        String bottom = getIntent().getStringExtra("bottom");
+        if (title != null) {
+            tvTitle.setText(title);
+        }
+        if (content != null) {
+            tvContent.setText(content);
+        }
+        if (bottom != null) {
+            tvWarn.setText(bottom);
+        }
         lightLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

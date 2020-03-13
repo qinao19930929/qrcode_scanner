@@ -53,7 +53,10 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
         switch (call.method) {
             case "scan":
                 this.result = result;
-                showBarcodeView();
+                String title = call.argument("title");
+                String content = call.argument("content");
+                String bottom = call.argument("bottom");
+                showBarcodeView(title, content, bottom);
                 break;
             case "scan_photo":
                 this.result = result;
@@ -68,7 +71,7 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
             case "scan_bytes":
                 this.result = result;
                 byte[] bytes = call.argument("bytes");
-                Bitmap  bitmap = BitmapFactory.decodeByteArray(bytes , 0, bytes != null ? bytes.length : 0);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes != null ? bytes.length : 0);
                 CodeUtils.analyzeBitmap(bitmap, new CustomAnalyzeCallback(this.result, this.activity.getIntent()));
                 break;
             case "generate_barcode":
@@ -81,8 +84,11 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
         }
     }
 
-    private void showBarcodeView() {
+    private void showBarcodeView(String title, String content, String bottom) {
         Intent intent = new Intent(activity, SecondActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("content", content);
+        intent.putExtra("bottom", bottom);
         activity.startActivityForResult(intent, REQUEST_CODE);
     }
 
@@ -105,7 +111,7 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void goChoosePhoto(String event) {
         CodeUtils.AnalyzeCallback analyzeCallback = new CustomAnalyzeCallback(this.result, null);
-        analyzeCallback.onAnalyzeSuccess(null,event);
+        analyzeCallback.onAnalyzeSuccess(null, event);
     }
 
     @Override
@@ -117,7 +123,7 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
                     try {
                         CodeUtils.AnalyzeCallback analyzeCallback = new CustomAnalyzeCallback(this.result, intent);
 //                        CodeUtils.analyzeBitmap(secondBundle.getString("path"), analyzeCallback);
-                        analyzeCallback.onAnalyzeSuccess(null,secondBundle.getString("m_intent"));
+                        analyzeCallback.onAnalyzeSuccess(null, secondBundle.getString("m_intent"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -127,7 +133,7 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
                         if (bundle.getInt(RESULT_TYPE) == RESULT_SUCCESS) {
                             String barcode = bundle.getString(CodeUtils.RESULT_STRING);
                             this.result.success(barcode);
-                        }else{
+                        } else {
                             this.result.success(null);
                         }
                     }

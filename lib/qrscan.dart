@@ -10,7 +10,10 @@ const CameraAccessDenied = 'PERMISSION_NOT_GRANTED';
 const MethodChannel _channel = const MethodChannel('qr_scan');
 
 /// Scanning Bar Code or QR Code return content
-Future<String> scan() async => await _channel.invokeMethod('scan');
+Future<String> scan(String title, String content, String bottom) async {
+  var arguments = {"title": title, "content": content, "bottom": bottom};
+  return await _channel.invokeMethod('scan', arguments);
+}
 
 /// Scanning Photo Bar Code or QR Code return content
 Future<String> scanPhoto() async => await _channel.invokeMethod('scan_photo');
